@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block titulo %}Tickets{% endblock %}
+{% block contenido %}
+<h1>Tickets</h1>
+<div class="resumen">
+  {% for e in estados %}
+    <a class="pildora e-{{ e }}" href="{{ url_for('index', estado=e) }}">{{ e }}: <b>{{ conteo.get(e, 0) }}</b></a>
+  {% endfor %}
+</div>
+<form class="filtros" method="get">
+  <input type="search" name="q" value="{{ q }}" placeholder="Buscar por problema, equipo o cliente">
+  <select name="estado">
+    <option value="">Todos los estados</option>
+    {% for e in estados %}<option value="{{ e }}" {{ 'selected' if e == estado }}>{{ e }}</option>{% endfor %}
+  </select>
+  <select name="prioridad">
+    <option value="">Todas las prioridades</option>
+    {% for p in prioridades %}<option value="{{ p }}" {{ 'selected' if p == prioridad }}>{{ p }}</option>{% endfor %}
+  </select>
+  <button type="submit">Filtrar</button>
+</form>
+{% if tickets %}
+<div class="tabla-wrap"><table>
+  <thead><tr><th>#</th><th>Cliente</th><th>Equipo</th><th>Problema</th><th>Prioridad</th><th>Estado</th><th>Creado</th></tr></thead>
+  <tbody>
+  {% for t in tickets %}
+    <tr>
+      <td><a href="{{ url_for('detalle', ticket_id=t['id']) }}">#{{ t['id'] }}</a></td>
+      <td>{{ t['cliente'] }}</td><td>{{ t['equipo'] }}</td><td>{{ t['problema'] }}</td>
+      <td><span class="badge p-{{ t['prioridad'] }}">{{ t['prioridad'] }}</span></td>
+      <td><span class="badge e-{{ t['estado'] }}">{{ t['estado'] }}</span></td>
+      <td>{{ t['creado_en'][:10] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table></div>
+{% else %}
+  <p class="vacio">No hay tickets con esos filtros.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block titulo %}Estadísticas{% endblock %}
+{% block contenido %}
+<h1>Estadísticas</h1>
+<div class="grilla">
+  <section class="tarjeta">
+    <h2>Por estado</h2>
+    {% for f in est['por_estado'] %}
+      <div class="barra"><span>{{ f['estado'] }} ({{ f['cantidad'] }})</span>
+        <div><i class="e-{{ f['estado'] }}" style="width: {{ (f['cantidad'] / total * 100) | round }}%"></i></div></div>
+    {% endfor %}
+  </section>
+  <section class="tarjeta">
+    <h2>Por prioridad</h2>
+    {% for f in est['por_prioridad'] %}
+      <div class="barra"><span>{{ f['prioridad'] }} ({{ f['cantidad'] }})</span>
+        <div><i class="p-{{ f['prioridad'] }}" style="width: {{ (f['cantidad'] / total * 100) | round }}%"></i></div></div>
+    {% endfor %}
+  </section>
+  <section class="tarjeta">
+    <h2>Tiempo promedio de resolución</h2>
+    {% if est['horas_promedio_resolucion'] is none %}
+      <p class="vacio">Todavía no hay tickets resueltos.</p>
+    {% else %}
+      <p class="grande">{{ '%.1f' | format(est['horas_promedio_resolucion']) }} horas</p>
+    {% endif %}
+  </section>
+  <section class="tarjeta">
+    <h2>Clientes con más tickets</h2>
+    <ol>{% for c in est['top_clientes'] %}<li>{{ c['nombre'] }} — {{ c['tickets'] }}</li>{% endfor %}</ol>
+  </section>
+</div>
+{% endblock %}

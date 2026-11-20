@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block titulo %}Nuevo ticket{% endblock %}
+{% block contenido %}
+<h1>Nuevo ticket</h1>
+<form class="formulario" method="post">
+  <label>Cliente * <input name="cliente" value="{{ f.get('cliente', '') }}" required></label>
+  <div class="fila">
+    <label>Teléfono <input name="telefono" value="{{ f.get('telefono', '') }}"></label>
+    <label>Email <input type="email" name="email" value="{{ f.get('email', '') }}"></label>
+  </div>
+  <label>Equipo * <input name="equipo" value="{{ f.get('equipo', '') }}" placeholder="Ej: Notebook Lenovo" required></label>
+  <label>Problema * <textarea name="problema" rows="4" required>{{ f.get('problema', '') }}</textarea></label>
+  <label>Prioridad *
+    <select name="prioridad">
+      {% for p in prioridades %}<option value="{{ p }}" {{ 'selected' if (f.get('prioridad') or 'media') == p }}>{{ p }}</option>{% endfor %}
+    </select>
+  </label>
+  <button type="submit">Crear ticket</button>
+</form>
+{% endblock %}

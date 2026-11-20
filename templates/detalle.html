@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titulo %}Ticket #{{ t['id'] }}{% endblock %}
+{% block contenido %}
+<h1>Ticket #{{ t['id'] }}
+  <span class="badge p-{{ t['prioridad'] }}">{{ t['prioridad'] }}</span>
+  <span class="badge e-{{ t['estado'] }}">{{ t['estado'] }}</span>
+</h1>
+<section class="tarjeta">
+  <p><b>Cliente:</b> {{ t['cliente'] }} · tel: {{ t['telefono'] or '-' }} · mail: {{ t['email'] or '-' }}</p>
+  <p><b>Equipo:</b> {{ t['equipo'] }}</p>
+  <p><b>Problema:</b> {{ t['problema'] }}</p>
+  <p class="chico">Creado: {{ t['creado_en'] }} · Actualizado: {{ t['actualizado_en'] }}{% if t['resuelto_en'] %} · Resuelto: {{ t['resuelto_en'] }}{% endif %}</p>
+  <form class="en-linea" method="post" action="{{ url_for('cambiar_estado', ticket_id=t['id']) }}">
+    <label>Cambiar estado:
+      <select name="estado">
+        {% for e in estados %}<option value="{{ e }}" {{ 'selected' if e == t['estado'] }}>{{ e }}</option>{% endfor %}
+      </select>
+    </label>
+    <button type="submit">Guardar</button>
+  </form>
+</section>
+<h2>Notas</h2>
+<section class="tarjeta">
+  {% for n in notas %}
+    <p class="nota"><span class="chico">{{ n['creado_en'] }}</span><br>{{ n['texto'] }}</p>
+  {% else %}
+    <p class="vacio">Todavía no hay notas.</p>
+  {% endfor %}
+  <form class="formulario" method="post" action="{{ url_for('nueva_nota', ticket_id=t['id']) }}">
+    <label>Agregar nota <textarea name="texto" rows="3" required></textarea></label>
+    <button type="submit">Agregar</button>
+  </form>
+</section>
+<p><a href="{{ url_for('index') }}">← Volver a tickets</a></p>
+{% endblock %}

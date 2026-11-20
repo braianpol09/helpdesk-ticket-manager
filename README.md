@@ -1,6 +1,6 @@
 # Help Desk Ticket Manager
 
-Sistema de gestión de tickets de soporte técnico para consola, hecho con **Python** y **SQLite**.
+Sistema de gestión de tickets de soporte técnico con **Python** y **SQLite**, con dos interfaces: una **web (Flask)** y una de **consola**.
 Nació de mi trabajo como técnico independiente: necesitaba llevar el registro de equipos, fallas y
 reparaciones de mis clientes en un solo lugar.
 
@@ -16,13 +16,27 @@ reparaciones de mis clientes en un solo lugar.
 
 ## Cómo ejecutarlo
 
-Solo requiere **Python 3.9 o superior**. No usa librerías externas.
+Requiere **Python 3.9 o superior**.
 
 ```bash
 git clone https://github.com/braianpol09/helpdesk-ticket-manager.git
 cd helpdesk-ticket-manager
-python main.py --demo   # la primera vez, con datos de ejemplo
-python main.py          # uso normal
+```
+
+**Versión web** (usa Flask):
+
+```bash
+pip install -r requirements.txt
+python app.py --demo    # la primera vez, con datos de ejemplo
+python app.py           # uso normal
+```
+
+Después abrí http://127.0.0.1:5000 en el navegador.
+
+**Versión de consola** (no necesita librerías externas):
+
+```bash
+python main.py --demo
 ```
 
 ## Tests
@@ -34,10 +48,14 @@ python -m unittest -v
 ## Estructura del proyecto
 
 ```
+app.py             Interfaz web (rutas de Flask)
+templates/         Páginas HTML (Jinja2)
+static/style.css   Estilos (con modo claro y oscuro)
 main.py            Interfaz de consola (menú y entrada de datos)
 database.py        Acceso a datos: tablas, consultas y reportes en SQLite
 demo.py            Datos de ejemplo para probar el programa
-test_database.py   Tests automáticos de la capa de datos
+test_database.py   Tests de la capa de datos
+test_app.py        Tests de la versión web
 ```
 
 ## Modelo de datos
@@ -57,11 +75,12 @@ Todas las consultas están parametrizadas.
 - Diseñar una base relacional con claves foráneas y restricciones (`CHECK`).
 - Separar la lógica de datos de la interfaz.
 - Escribir tests con `unittest` usando una base en memoria.
+- Armar una app web con Flask reutilizando la misma capa de datos (rutas, formularios, plantillas Jinja2).
+- Validar los datos del formulario del lado del servidor y evitar XSS (las plantillas escapan el HTML).
 
 ## Ideas para mejorar
 
-- Interfaz web o de escritorio.
-- Asignar tickets a distintos técnicos.
+- Asignar tickets a distintos técnicos y agregar inicio de sesión.
 - Gráficos de estadísticas.
 
 ## Autor

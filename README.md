@@ -13,6 +13,10 @@ reparaciones de mis clientes en un solo lugar.
 - Buscar por problema, equipo o nombre de cliente.
 - Ver estadísticas: tickets por estado y prioridad, tiempo promedio de resolución y clientes con más tickets.
 - Exportar todos los tickets a CSV.
+## Capturas
+
+![Listado de tickets](capturas/listado.png)
+![Estadísticas](capturas/estadisticas.png)
 
 ## Cómo ejecutarlo
 
